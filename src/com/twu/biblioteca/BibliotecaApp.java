@@ -1,22 +1,29 @@
 package com.twu.biblioteca;
 
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.List;
 
 public class BibliotecaApp {
 
-    public static void main(String[] args) {
-        System.out.println("Hello, world!");
+    protected List<String> list = Arrays.asList("Mockingbird", "1994", "The Hobbit");
+
+    public void start(PrintStream printStream, List<String> list){
+        welcome(printStream);
+        listBooks(printStream, list);
     }
 
-    public void run(PrintStream printStream) {
-        printStream.print("welcome:)");
+    public void welcome(PrintStream printStream) {
+        printStream.println("welcome:)");
     }
 
-    public void runList(PrintStream printStream, List<String> testList) {
+    public void listBooks(PrintStream printStream, List<String> testList) {
         for (String i: testList) {
-            printStream.print(i);
-            printStream.print("\n");
+            printStream.println(i);
         }
     }
 }
+
+/*public class main(String[] args){
+
+}*/
