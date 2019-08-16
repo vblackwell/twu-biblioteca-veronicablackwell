@@ -31,7 +31,7 @@ public class BibliotecaAppTest {
         biblibtest = new BibliotecaApp();
         outputStream = new ByteArrayOutputStream();
         printStream = new PrintStream(outputStream);
-        testList = Arrays.asList("Mockingbird", "1994", "The Hobbit");
+        testList = Arrays.asList("It", "Harry Potter", "Corazon");
 
     }
 
@@ -44,12 +44,13 @@ public class BibliotecaAppTest {
     @Test
     public void shouldListBooks() {
         biblibtest.listBooks(printStream, testList);
-        assertThat(outputStream.toString(), is("Mockingbird\n1994\nThe Hobbit\n"));
+        assertThat(outputStream.toString(), is("It\nHarry Potter\nCorazon\n"));
     }
 
     @Test
-    public void shouldRun(){
+    public void shouldStart(){
         biblibtest.start(printStream, testList);
-        assertThat(outputStream.toString(), is("welcome:)\nMockingbird\n1994\nThe Hobbit\n"));
+        assertThat(outputStream.toString(), is("welcome:)\nIt\nHarry Potter\nCorazon\n"));
     }
+
 }

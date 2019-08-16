@@ -6,24 +6,26 @@ import java.util.List;
 
 public class BibliotecaApp {
 
-    protected List<String> list = Arrays.asList("Mockingbird", "1994", "The Hobbit");
+    protected List<Book> list;
 
-    public void start(PrintStream printStream, List<String> list){
+    public static void main(String args[]){}
+
+    protected void start(PrintStream printStream, List<String> list){
         welcome(printStream);
         listBooks(printStream, list);
     }
 
-    public void welcome(PrintStream printStream) {
+    protected void welcome(PrintStream printStream) {
         printStream.println("welcome:)");
     }
 
-    public void listBooks(PrintStream printStream, List<String> testList) {
+    protected void listBooks(PrintStream printStream, List<String> testList) {
         for (String i: testList) {
             printStream.println(i);
         }
     }
+
+    public List<Book> addList(Book book){
+        list
+    }
 }
-
-/*public class main(String[] args){
-
-}*/
