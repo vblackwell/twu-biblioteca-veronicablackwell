@@ -24,15 +24,22 @@ public class BibliotecaAppTest {
     protected BibliotecaApp biblibtest;
     protected ByteArrayOutputStream outputStream;
     protected PrintStream printStream;
-    protected List<String> testList;
+    protected List<Book> testList = new ArrayList<Book>();
+    protected Book testBook1;
+    protected Book testBook2;
+    protected Book testBook3;
 
     @Before
     public void setUp(){
         biblibtest = new BibliotecaApp();
         outputStream = new ByteArrayOutputStream();
         printStream = new PrintStream(outputStream);
-        testList = Arrays.asList("It", "Harry Potter", "Corazon");
-
+        testBook1 = new Book("It", "Stephan King", 1989);
+        testBook2 = new Book("Harry Potter", "JK Rowling", 1991);
+        testBook3 = new Book("Corazon", "Yesika S.", 2017);
+        testList.add(testBook1);
+        testList.add(testBook2);
+        testList.add(testBook3);
     }
 
     @Test
@@ -44,13 +51,15 @@ public class BibliotecaAppTest {
     @Test
     public void shouldListBooks() {
         biblibtest.listBooks(printStream, testList);
-        assertThat(outputStream.toString(), is("It\nHarry Potter\nCorazon\n"));
+        assertThat(outputStream.toString(), is("It, Stephan King, 1989\nHarry Potter, JK Rowling, 1991\nCorazon, " +
+                "Yesika S., 2017\n"));
     }
 
     @Test
     public void shouldStart(){
         biblibtest.start(printStream, testList);
-        assertThat(outputStream.toString(), is("welcome:)\nIt\nHarry Potter\nCorazon\n"));
+        assertThat(outputStream.toString(), is("welcome:)\nIt, Stephan King, 1989\nHarry Potter, JK Rowling, 1991\n" +
+                "Corazon, Yesika S., 2017\n"));
     }
 
 }

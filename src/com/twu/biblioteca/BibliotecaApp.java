@@ -8,9 +8,9 @@ public class BibliotecaApp {
 
     protected List<Book> list;
 
-    public static void main(String args[]){}
+    public static void main(String[] args){}
 
-    protected void start(PrintStream printStream, List<String> list){
+    protected void start(PrintStream printStream, List<Book> list){
         welcome(printStream);
         listBooks(printStream, list);
     }
@@ -19,13 +19,13 @@ public class BibliotecaApp {
         printStream.println("welcome:)");
     }
 
-    protected void listBooks(PrintStream printStream, List<String> testList) {
-        for (String i: testList) {
+    protected void listBooks(PrintStream printStream, List<Book> testList) {
+        for (Book i: testList) {
             printStream.println(i);
         }
     }
 
-    public List<Book> addList(Book book){
+    /*public List<Book> addList(Book book){
         list
-    }
+    }*/
 }

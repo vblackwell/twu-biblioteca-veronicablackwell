@@ -2,9 +2,9 @@ package com.twu.biblioteca;
 
 public class Book {
 
-    private String title;
-    private String author;
-    private int pubYear;
+    protected String title;
+    protected String author;
+    protected int pubYear;
 
     public Book(final String title, final String author, final int pubYear){
         this.title = title;
