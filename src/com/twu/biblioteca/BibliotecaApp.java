@@ -12,7 +12,11 @@ public class BibliotecaApp {
 
     protected void start(PrintStream printStream, List<Book> list){
         welcome(printStream);
-        listBooks(printStream, list);
+        printMenu(printStream, list);
+    }
+
+    protected void printMenu(PrintStream printStream, List<Book> list){
+        printStream.println("MENU\nOption 1: List of Books");
     }
 
     protected void welcome(PrintStream printStream) {
@@ -23,6 +27,9 @@ public class BibliotecaApp {
         for (Book i: testList) {
             printStream.println(i);
         }
+    }
+
+    public void userChooseOption() {
     }
 
     /*public List<Book> addList(Book book){

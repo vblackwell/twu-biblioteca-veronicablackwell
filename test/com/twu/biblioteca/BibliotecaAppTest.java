@@ -56,10 +56,14 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldStart(){
+    public void shouldStartMenu(){
         biblibtest.start(printStream, testList);
-        assertThat(outputStream.toString(), is("welcome:)\nIt, Stephan King, 1989\nHarry Potter, JK Rowling, 1991\n" +
-                "Corazon, Yesika S., 2017\n"));
+        assertThat(outputStream.toString(), is("welcome:)\nMENU\nOption 1: List of Books\n"));
+    }
+
+    @Test
+    public void userShouldChooseOption(){
+        biblibtest.userChooseOption();
     }
 
 }
