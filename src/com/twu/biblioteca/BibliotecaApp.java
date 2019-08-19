@@ -39,9 +39,8 @@ public class BibliotecaApp {
             }
             else if (userInput.contentEquals("Option 2")) {
                 checkOut(scanner);
-                printStream.println(scanner.scanInput());
             } else if (userInput.equals("Option 3")) {
-                returnBook(returningBook);
+                returnBook(scanner); //returningBook as parameter
             } else if (userInput.toUpperCase().equals("X")) {
                 quitApp();
                 break;
@@ -81,15 +80,24 @@ public class BibliotecaApp {
         return checkedOutBook;
     }
 
-    protected void returnBook(Book returningBook) {
+    protected void returnBook(ScanWrap scanner) {
+        String[] bookPieces = scanner.scanInput().split(",");
+        String title = bookPieces[0];
+        String author = bookPieces[1];
+        int pubYear = Integer.parseInt(bookPieces[2]);
+        Book returningBook = new Book(title, author, pubYear);
+
+        boolean bookNotChecked = false;
         for (Book i: checkedOutList) {
             if (returningBook.title.equals(i.title)) {
-                menu.successReturn();
                 list.add(returningBook);
+                checkedOutList.remove(returningBook);
+                menu.successReturn();
+                bookNotChecked = true;
             }
-            else{
-                menu.unsuccessReturn();
-            }
+        }
+        if (!bookNotChecked) {
+            menu.unsuccessReturn();
         }
     }
 

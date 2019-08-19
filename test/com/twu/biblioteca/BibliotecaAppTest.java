@@ -51,6 +51,7 @@ public class BibliotecaAppTest {
         testList.add(testBook2);
         testList.add(testBook3);
         biblibtest = new BibliotecaApp(testList, mockPrintStream, mockScanner, mockMenu);
+        //It,Stephan King,1989
     }
 
     /*@Test
