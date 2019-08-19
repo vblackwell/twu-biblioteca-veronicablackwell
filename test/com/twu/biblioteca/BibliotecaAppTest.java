@@ -29,9 +29,10 @@ import static org.mockito.Mockito.when;
 public class BibliotecaAppTest {
 
     protected BibliotecaApp biblibtest;
-    protected ByteArrayOutputStream outputStream;
-    protected PrintStream printStream;
+    //protected ByteArrayOutputStream outputStream;
+    protected PrintStream mockPrintStream;
     protected ScanWrap mockScanner;
+    protected Menu mockMenu;
     protected List<Book> testList = new ArrayList<Book>();
     protected Book testBook1;
     protected Book testBook2;
@@ -39,53 +40,57 @@ public class BibliotecaAppTest {
 
     @Before
     public void setUp(){
-        outputStream = new ByteArrayOutputStream();
-        printStream = new PrintStream(outputStream);
+        //outputStream = new ByteArrayOutputStream();
+        mockPrintStream = mock(PrintStream.class);
         mockScanner = mock(ScanWrap.class);
+        mockMenu = mock(Menu.class);
         testBook1 = new Book("It", "Stephan King", 1989);
         testBook2 = new Book("Harry Potter", "JK Rowling", 1991);
         testBook3 = new Book("Corazon", "Yesika S.", 2017);
         testList.add(testBook1);
         testList.add(testBook2);
         testList.add(testBook3);
-        biblibtest = new BibliotecaApp(testList, printStream, mockScanner);
+        biblibtest = new BibliotecaApp(testList, mockPrintStream, mockScanner, mockMenu);
     }
 
-    @Test
+    /*@Test
     public void shouldWelcome() {
         biblibtest.welcome();
-        assertThat(outputStream.toString(), is("welcome:)\n"));
-    }
-
-    @Test
-    public void shouldListBooks() {
-        biblibtest.listBooks();
-        assertThat(outputStream.toString(), is("It, Stephan King, 1989\nHarry Potter, JK Rowling, 1991\nCorazon, " +
-                "Yesika S., 2017\n"));
+        //assertThat(outputStream.toString(), is("welcome:)\n"));
+        String expectedWelcome = "welcome:)";
+        verify(mockPrintStream).println(expectedWelcome);
     }
 
     @Test
     public void shouldStartMenu(){
         biblibtest.start();
-        //assertThat(outputStream.toString(), is("welcome:)\nMENU\nOption 1\n"));
+        assertThat(outputStream.toString(), is("welcome:)\nMENU\nOption 1\n"));
+    }*/
+
+    @Test
+    public void userShouldChooseOption1(){
+        when(mockScanner.scanInput()).thenReturn("Option 1");
+        biblibtest.userChooseOption();
+        verify(mockMenu).listBooks(testList);
+    }
+
+   /* @Test
+    public void userShouldChooseOption2(){
+        when(mockScanner.scanInput()).thenReturn("Option 2");
+        biblibtest.userChooseOption();
+        assertThat();
     }
 
     /*@Test
-    public void userShouldChooseOption(){
-        biblibtest.userChooseOption(mockScanner);
-        when(mockScanner.scanInput()).then();
-    }
-
-    @Test
     public void shouldCheckOut(){
         biblibtest.checkOut();
         assertThat();
-    }*/
+    }
 
     @Test
     public void shouldQuit(){
         biblibtest.quitApp();
         when();
-    }
+    }*/
 
 }

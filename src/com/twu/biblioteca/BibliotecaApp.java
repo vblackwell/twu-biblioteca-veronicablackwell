@@ -3,105 +3,109 @@ package com.twu.biblioteca;
 import org.mockito.internal.configuration.injection.scanner.MockScanner;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class BibliotecaApp {
 
     protected List<Book> list;
-    protected List<Book> checkedOutList;
+    protected List<Book> checkedOutList = new ArrayList<Book>();
     protected Book returningBook;
     protected PrintStream printStream;
     protected ScanWrap scanner;
+    protected Menu menu;
 
 
-    public BibliotecaApp(List<Book> list, PrintStream printStream, ScanWrap scanner){
+    public BibliotecaApp(List<Book> list, PrintStream printStream, ScanWrap scanner, Menu menu){
         this.list = list;
         this.printStream = printStream;
         this.scanner = scanner;
+        this.menu = menu;
     }
 
     protected void start(){
-        welcome();
-        printMenu();
-        userChooseOption(scanner);
+        menu.welcome();
+        menu.printMenu();
+        userChooseOption();
     }
 
-    protected void printMenu(){
-        printStream.println("MENU\nOption 1");
-    }
-
-    protected void welcome() {
-        printStream.println("welcome:)");
-    }
-
-    protected void listBooks() {
-        for (Book i: list) {
-            printStream.println(i);
-        }
-    }
-
-    protected void userChooseOption(ScanWrap scanner) {
-        if (scanner.scanInput().equals("Option 1")){
-            listBooks();
-        }
-        else if(scanner.scanInput().equals("Option 2")){
-            checkOut();
-        }
-        else if(scanner.scanInput().equals("Option 3")) {
-            returnBook(returningBook); //does this work??
-        }
-        else if (scanner.scanInput().equals("X")){
-            quitApp();
-        }
-        else {
-            printStream.println("Invalid Option!");
+    protected void userChooseOption() {
+        String userInput;
+        while(true) {
+            userInput = scanner.scanInput();
+            if (userInput.equals("Option 1")) {
+                menu.listBooks(list);
+            }
+            else if (userInput.contentEquals("Option 2")) {
+                checkOut(scanner);
+                printStream.println(scanner.scanInput());
+            } else if (userInput.equals("Option 3")) {
+                returnBook(returningBook);
+            } else if (userInput.toUpperCase().equals("X")) {
+                quitApp();
+                break;
+            } else {
+                printStream.println("Invalid Option!");
+            }
         }
     }
 
-    protected Boolean isBookInLib(){
+    protected Boolean isBookInLib(String userInput){
         for (Book i: list){
-            if (scanner.scanInput().equals(i.title)){
-                printStream.println("Thank you! Enjoy the book");
+            if (userInput.equals(i.title)){
+                menu.successCheckout();
                 return true;
             }
         }
-        printStream.println("Sorry, that book is not available");
+        menu.unsuccessCheckout();
         return false;
     }
 
-    protected Book checkOut(){
+    protected Book checkOut(ScanWrap scanner){
+        printStream.println("Enter book title");
         Book checkedOutBook = null;
-        if (isBookInLib().equals(true)){
+        String userInput = scanner.scanInput();
+        if (isBookInLib(userInput)){
              for(Book i: list) {
-                 if (scanner.scanInput().equals(i.title)) {
+                 if (userInput.equals(i.title)) {
                      checkedOutBook = i;
                  }
              }
         }
-        list.remove(checkedOutBook);
+        else {
+            printStream.println("Invalid");
+        }
         checkedOutList.add(checkedOutBook);
+        list.remove(checkedOutBook);
         return checkedOutBook;
     }
 
     protected void returnBook(Book returningBook) {
         for (Book i: checkedOutList) {
             if (returningBook.title.equals(i.title)) {
-                printStream.println("Thank you for returning the book.");
+                menu.successReturn();
                 list.add(returningBook);
             }
             else{
-                printStream.println("That is not a valid book to return.");
+                menu.unsuccessReturn();
             }
         }
     }
 
     protected void quitApp(){
-        printStream.println("Quitting Biblioteca App!");
+        menu.quitPrint();
         scanner.scanClose();
     }
 
-    /*public static void main(String[] args){
-        start();
-    }*/
+    public static void main(String[] args){
+        List<Book> mainBooks = new ArrayList<>();
+        mainBooks.add(new Book("It", "Stephan King", 1989));
+        mainBooks.add(new Book("Harry Potter", "JK Rowling", 1991));
+        mainBooks.add(new Book("Corazon", "Yesika S.", 2017));
+
+        BibliotecaApp bookApp = new BibliotecaApp(mainBooks, new PrintStream(System.out), new ScanWrap(),
+                new Menu(new PrintStream(System.out), new ScanWrap()));
+        bookApp.start();
+    }
 }
