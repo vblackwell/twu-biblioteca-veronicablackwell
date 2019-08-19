@@ -2,7 +2,6 @@ package com.twu.biblioteca;
 
 import org.mockito.internal.configuration.injection.scanner.MockScanner;
 
-import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +9,8 @@ import java.util.List;
 public class BibliotecaApp {
 
     protected List<Book> list;
+    protected List<Book> checkedOutList;
+    protected Book returningBook;
     protected PrintStream printStream;
     protected ScanWrap scanner;
 
@@ -46,10 +47,13 @@ public class BibliotecaApp {
         }
         else if(scanner.scanInput().equals("Option 2")){
             checkOut();
-        }/*
+        }
+        else if(scanner.scanInput().equals("Option 3")) {
+            returnBook(returningBook); //does this work??
+        }
         else if (scanner.scanInput().equals("X")){
             quitApp();
-        }*/
+        }
         else {
             printStream.println("Invalid Option!");
         }
@@ -74,21 +78,30 @@ public class BibliotecaApp {
                      checkedOutBook = i;
                  }
              }
-
         }
         list.remove(checkedOutBook);
+        checkedOutList.add(checkedOutBook);
         return checkedOutBook;
     }
 
-    /*protected void quitApp(){
-
+    protected void returnBook(Book returningBook) {
+        for (Book i: checkedOutList) {
+            if (returningBook.title.equals(i.title)) {
+                printStream.println("Thank you for returning the book.");
+                list.add(returningBook);
+            }
+            else{
+                printStream.println("That is not a valid book to return.");
+            }
+        }
     }
 
-    public static void main(String[] args){
-
+    protected void quitApp(){
+        printStream.println("Quitting Biblioteca App!");
+        scanner.scanClose();
     }
 
-    /*public List<Book> addList(Book book){
-        list
+    /*public static void main(String[] args){
+        start();
     }*/
 }
