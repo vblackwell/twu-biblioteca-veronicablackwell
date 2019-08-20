@@ -51,10 +51,11 @@ public class BibliotecaAppTest {
         testList.add(testBook2);
         testList.add(testBook3);
         biblibtest = new BibliotecaApp(testList, mockPrintStream, mockScanner, mockMenu);
-        //It,Stephan King,1989
     }
 
-    /*@Test
+    /*
+    Older story tests that were no longer needed due to starting to use mock
+    @Test
     public void shouldWelcome() {
         biblibtest.welcome();
         //assertThat(outputStream.toString(), is("welcome:)\n"));
@@ -75,11 +76,13 @@ public class BibliotecaAppTest {
         verify(mockMenu).listBooks(testList);
     }
 
-   /* @Test
+   /*@Test
     public void userShouldChooseOption2(){
         when(mockScanner.scanInput()).thenReturn("Option 2");
         biblibtest.userChooseOption();
-        assertThat();
+        biblibtest.checkOut(mockScanner);
+        when(mockScanner.scanInput()).thenReturn("It");
+        assertThat(biblibtest.checkOut(mockScanner), is(testBook1));
     }
 
     /*@Test

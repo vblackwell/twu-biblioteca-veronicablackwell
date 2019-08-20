@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import com.sun.source.tree.LiteralTree;
 import org.mockito.internal.configuration.injection.scanner.MockScanner;
 
 import java.io.PrintStream;
@@ -9,16 +10,17 @@ import java.util.List;
 
 public class BibliotecaApp {
 
-    protected List<Book> list;
+    protected List<Book> books;
     protected List<Book> checkedOutList = new ArrayList<Book>();
-    protected Book returningBook;
+    protected List<Movie> movies;
     protected PrintStream printStream;
     protected ScanWrap scanner;
     protected Menu menu;
 
 
-    public BibliotecaApp(List<Book> list, PrintStream printStream, ScanWrap scanner, Menu menu){
-        this.list = list;
+    public BibliotecaApp(List<Book> books, List<Movie> movies, PrintStream printStream, ScanWrap scanner, Menu menu){
+        this.books = books;
+        this.movies = movies;
         this.printStream = printStream;
         this.scanner = scanner;
         this.menu = menu;
@@ -35,11 +37,14 @@ public class BibliotecaApp {
         while(true) {
             userInput = scanner.scanInput();
             if (userInput.equals("Option 1")) {
-                menu.listBooks(list);
+                menu.listBooks(books);
             }
-            else if (userInput.contentEquals("Option 2")) {
+            else if (userInput.equals("Option 2")){
+                menu.listMovies(movies);
+            }
+            else if (userInput.equals("Option 3")) {
                 checkOut(scanner);
-            } else if (userInput.equals("Option 3")) {
+            } else if (userInput.equals("Option 4")) {
                 returnBook(scanner); //returningBook as parameter
             } else if (userInput.toUpperCase().equals("X")) {
                 quitApp();
@@ -51,7 +56,7 @@ public class BibliotecaApp {
     }
 
     protected Boolean isBookInLib(String userInput){
-        for (Book i: list){
+        for (Book i: books){
             if (userInput.equals(i.title)){
                 menu.successCheckout();
                 return true;
@@ -66,7 +71,7 @@ public class BibliotecaApp {
         Book checkedOutBook = null;
         String userInput = scanner.scanInput();
         if (isBookInLib(userInput)){
-             for(Book i: list) {
+             for(Book i: books) {
                  if (userInput.equals(i.title)) {
                      checkedOutBook = i;
                  }
@@ -76,12 +81,14 @@ public class BibliotecaApp {
             printStream.println("Invalid");
         }
         checkedOutList.add(checkedOutBook);
-        list.remove(checkedOutBook);
+        books.remove(checkedOutBook);
         return checkedOutBook;
     }
 
     protected void returnBook(ScanWrap scanner) {
-        String[] bookPieces = scanner.scanInput().split(",");
+        printStream.println("Enter book title, author, and publication year in the following way." +
+                "Example: It/Stephan King/1989");
+        String[] bookPieces = scanner.scanInput().split("/");
         String title = bookPieces[0];
         String author = bookPieces[1];
         int pubYear = Integer.parseInt(bookPieces[2]);
@@ -90,7 +97,7 @@ public class BibliotecaApp {
         boolean bookNotChecked = false;
         for (Book i: checkedOutList) {
             if (returningBook.title.equals(i.title)) {
-                list.add(returningBook);
+                books.add(returningBook);
                 checkedOutList.remove(returningBook);
                 menu.successReturn();
                 bookNotChecked = true;
@@ -112,8 +119,13 @@ public class BibliotecaApp {
         mainBooks.add(new Book("Harry Potter", "JK Rowling", 1991));
         mainBooks.add(new Book("Corazon", "Yesika S.", 2017));
 
-        BibliotecaApp bookApp = new BibliotecaApp(mainBooks, new PrintStream(System.out), new ScanWrap(),
-                new Menu(new PrintStream(System.out), new ScanWrap()));
+        List<Movie> mainMovies = new ArrayList<>();
+        mainMovies.add(new Movie("Kill Bill", "Quentin Tarantino", 2003, "8"));
+        mainMovies.add(new Movie("Pulp Fiction", "Quentin Tarantino", 1994, "9"));
+        mainMovies.add(new Movie("Django Unchained", "Quentin Tarantino", 2012, "9"));
+
+        BibliotecaApp bookApp = new BibliotecaApp(mainBooks, mainMovies, new PrintStream(System.out), new ScanWrap(),
+                new Menu(new PrintStream(System.out)));
         bookApp.start();
     }
 }

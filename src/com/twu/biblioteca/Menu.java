@@ -6,11 +6,9 @@ import java.util.List;
 public class Menu {
 
     protected PrintStream printStream;
-    protected ScanWrap scanner;
 
-    public Menu(PrintStream printStream, ScanWrap scanner){
+    public Menu(PrintStream printStream){
         this.printStream = printStream;
-        this.scanner = scanner;
     }
 
     protected void welcome() {
@@ -23,6 +21,12 @@ public class Menu {
 
     protected void listBooks(List<Book> listBooks) {
         for (Book i: listBooks) {
+            printStream.println(i);
+        }
+    }
+
+    protected void listMovies(List<Movie> listMovies){
+        for (Movie i: listMovies){
             printStream.println(i);
         }
     }
