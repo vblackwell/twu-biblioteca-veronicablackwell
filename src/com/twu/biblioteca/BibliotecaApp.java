@@ -11,7 +11,8 @@ import java.util.List;
 public class BibliotecaApp {
 
     protected List<Book> books;
-    protected List<Book> checkedOutList = new ArrayList<Book>();
+    protected List<Book> checkedOutBooks = new ArrayList<Book>();
+    protected List<Movie> checkedOutMovies = new ArrayList<Movie>();
     protected List<Movie> movies;
     protected PrintStream printStream;
     protected ScanWrap scanner;
@@ -40,13 +41,18 @@ public class BibliotecaApp {
                 menu.listBooks(books);
             }
             else if (userInput.equals("Option 2")){
-                menu.listMovies(movies);
+                checkOutBook(scanner);
             }
             else if (userInput.equals("Option 3")) {
-                checkOut(scanner);
-            } else if (userInput.equals("Option 4")) {
-                returnBook(scanner); //returningBook as parameter
-            } else if (userInput.toUpperCase().equals("X")) {
+                returnBook(scanner);
+            }
+            else if (userInput.equals("Option 4")) {
+                menu.listMovies(movies);
+            }
+            else if (userInput.equals("Option 5")){
+                checkOutMovie(scanner);
+            }
+            else if (userInput.toUpperCase().equals("X")) {
                 quitApp();
                 break;
             } else {
@@ -66,7 +72,7 @@ public class BibliotecaApp {
         return false;
     }
 
-    protected Book checkOut(ScanWrap scanner){
+    protected Book checkOutBook(ScanWrap scanner){
         printStream.println("Enter book title");
         Book checkedOutBook = null;
         String userInput = scanner.scanInput();
@@ -80,9 +86,39 @@ public class BibliotecaApp {
         else {
             printStream.println("Invalid");
         }
-        checkedOutList.add(checkedOutBook);
+        checkedOutBooks.add(checkedOutBook);
         books.remove(checkedOutBook);
         return checkedOutBook;
+    }
+
+    protected Boolean isMovieInLib(String userInput){
+        for (Movie i: movies){
+            if (userInput.equals(i.title)){
+                menu.successCheckout();
+                return true;
+            }
+        }
+        menu.unsuccessCheckout();
+        return false;
+    }
+
+    protected Movie checkOutMovie(ScanWrap scanner){
+        printStream.println("Enter book title");
+        Movie checkedOutMovie = null;
+        String userInput = scanner.scanInput();
+        if (isMovieInLib(userInput)){
+            for(Movie i: movies) {
+                if (userInput.equals(i.title)) {
+                    checkedOutMovie = i;
+                }
+            }
+        }
+        else {
+            printStream.println("Invalid");
+        }
+        checkedOutMovies.add(checkedOutMovie);
+        books.remove(checkedOutMovie);
+        return checkedOutMovie;
     }
 
     protected void returnBook(ScanWrap scanner) {
@@ -95,10 +131,10 @@ public class BibliotecaApp {
         Book returningBook = new Book(title, author, pubYear);
 
         boolean bookNotChecked = false;
-        for (Book i: checkedOutList) {
+        for (Book i: checkedOutBooks) {
             if (returningBook.title.equals(i.title)) {
                 books.add(returningBook);
-                checkedOutList.remove(returningBook);
+                checkedOutBooks.remove(returningBook);
                 menu.successReturn();
                 bookNotChecked = true;
             }
