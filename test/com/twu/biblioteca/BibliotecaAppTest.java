@@ -33,10 +33,16 @@ public class BibliotecaAppTest {
     protected PrintStream mockPrintStream;
     protected ScanWrap mockScanner;
     protected Menu mockMenu;
-    protected List<Book> testList = new ArrayList<Book>();
+
+    protected List<Book> testBooks = new ArrayList<Book>();
     protected Book testBook1;
     protected Book testBook2;
     protected Book testBook3;
+
+    protected List<Movie> testMovies = new ArrayList<>();
+    protected Movie testMovie1;
+    protected Movie testMovie2;
+    protected Movie testMovie3;
 
     @Before
     public void setUp(){
@@ -44,13 +50,22 @@ public class BibliotecaAppTest {
         mockPrintStream = mock(PrintStream.class);
         mockScanner = mock(ScanWrap.class);
         mockMenu = mock(Menu.class);
+
         testBook1 = new Book("It", "Stephan King", 1989);
         testBook2 = new Book("Harry Potter", "JK Rowling", 1991);
         testBook3 = new Book("Corazon", "Yesika S.", 2017);
-        testList.add(testBook1);
-        testList.add(testBook2);
-        testList.add(testBook3);
-        biblibtest = new BibliotecaApp(testList, mockPrintStream, mockScanner, mockMenu);
+        testBooks.add(testBook1);
+        testBooks.add(testBook2);
+        testBooks.add(testBook3);
+
+        testMovie1 = new Movie("Kill Bill", "Quentin Tarantino", 2003, "8");
+        testMovie2 = new Movie("Pulp Fiction", "Quentin Tarantino", 1994, "9");
+        testMovie3 = new Movie("Django Unchained", "Quentin Tarantino", 2012, "9");
+        testMovies.add(testMovie1);
+        testMovies.add(testMovie2);
+        testMovies.add(testMovie3);
+
+        biblibtest = new BibliotecaApp(testBooks, testMovies, mockPrintStream, mockScanner, mockMenu);
     }
 
     /*
@@ -73,7 +88,7 @@ public class BibliotecaAppTest {
     public void userShouldChooseOption1(){
         when(mockScanner.scanInput()).thenReturn("Option 1");
         biblibtest.userChooseOption();
-        verify(mockMenu).listBooks(testList);
+        verify(mockMenu).listBooks(testBooks);
     }
 
    /*@Test
